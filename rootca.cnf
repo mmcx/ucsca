@@ -7,10 +7,11 @@ distinguished_name     = req_distinguished_name
 #string_mask            = utf8only
 
 [ req_distinguished_name ]
-C  = US
-O  = DigiCert Inc
-OU = www.digicert.com
-CN = DigiCert Assured ID Root CA
+C  = RU
+L  = Moscow
+O  = Company UCS LLC
+OU = r-keeper.ru
+CN = Company UCS Root CA
 
 [ ca_extensions ]
 keyUsage = critical, digitalSignature, keyCertSign, cRLSign

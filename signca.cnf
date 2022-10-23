@@ -4,10 +4,11 @@ distinguished_name     = req_distinguished_name
 x509_extensions        = ca_extensions
 
 [ req_distinguished_name ]
-C  = US
-O  = DigiCert Inc
-OU = www.digicert.com
-CN = DigiCert SHA2 Assured ID Code Signing CA
+C  = RU
+L  = Moscow
+O  = Company UCS LLC
+OU = r-keeper.ru
+CN = Company UCS Intermediate CA
 
 [ca_extensions]
 basicConstraints = critical,CA:true,pathlen:0

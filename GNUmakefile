@@ -61,18 +61,18 @@ mycert.crt: mycert.key mycert.cnf GNUmakefile
 	openssl ca -config mycert.cnf -gencrl -out mycert.crl.pem
 	openssl crl -in mycert.crl.pem -out mycert.crl -outform DER
 
-
 %.pem: %.crt
 	openssl x509 -in $< -out $@
 
-chained.pem: rootca.pem signca.pem
-	cat $^ > $@
+mycert.pfx: mycert.pem signca.pem rootca.pem GNUmakefile
+	#openssl pkcs12 -export -out $@ -passout pass:$(PFXPASS) -inkey mycert.key -in mycert.crt -certfile chained.pem
+	cat mycert.pem signca.pem rootca.pem > chained.pem
+	#openssl pkcs12 -export -out mycert.pfx -in chained.pem -inkey mycert.key -passout 'pass:'
+	openssl pkcs12 -export -certpbe PBE-SHA1-3DES -keypbe PBE-SHA1-3DES -nomac -out mycert.pfx -inkey mycert.key -in chained.pem -passout 'pass:$(PFXPASS)'
 
-mycert.pfx: mycert.crt chained.pem
-	openssl pkcs12 -export -out $@ -passout 'pass:$(PFXPASS)' -inkey mycert.key -in mycert.crt -certfile chained.pem
-
-%.pfx.info: %.pfx
-	openssl pkcs12 -in $< -passin 'pass:$(PFXPASS)' -passout 'pass:$(PFXPASS)' -out $@  -info
+%.pfx.info: %.pfx GNUmakefile
+	#openssl pkcs12 -in $< -passin 'pass:$(PFXPASS)' -passout 'pass:$(PFXPASS)' -out $@  -info
+	openssl pkcs12 -in $< -passin 'pass:$(PFXPASS)' -passout 'pass:' -out $@  -info -noenc
 
 #openssl req -x509 -new -nodes -key rootca.key -sha256 -days 9125 -out rootca.crt -config ./rootca.cnf
 #openssl req -x509 -new -nodes -key signca.key -out signca.csr -CA rootca.crt -CAkey rootca.key  -config signca.cnf -extensions ca_extensions
