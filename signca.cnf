@@ -15,15 +15,15 @@ basicConstraints = critical,CA:true,pathlen:0
 keyUsage = critical, digitalSignature, keyCertSign, cRLSign
 extendedKeyUsage = codeSigning
 authorityInfoAccess = @aia_sect
-crlDistributionPoints=crldp1_section,crldp2_section
+crlDistributionPoints=crldp1_section #,crldp2_section
 certificatePolicies=@polsect1, @polsect2
 
 [aia_sect]
 OCSP;URI = http://ocsp.digicert.com
-caIssuers;URI = http://cacerts.digicert.com/DigiCertAssuredIDRootCA.crt
+caIssuers;URI = https://github.com/mmcx/ucsca/raw/master/rootca.crt
 
 [crldp1_section]
-fullname=URI:http://crl4.digicert.com/DigiCertAssuredIDRootCA.crl
+fullname=URI:https://github.com/mmcx/ucsca/raw/master/rootca.crl
 
 [crldp2_section]
 fullname = URI:http://crl3.digicert.com/DigiCertAssuredIDRootCA.crl

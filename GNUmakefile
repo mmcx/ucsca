@@ -31,7 +31,7 @@ rootca.key:
 	openssl genrsa -out $@ 4096
 
 
-rootca.crt: rootca.key rootca.cnf GNUmakefile
+rootca.crt: rootca.key rootca.cnf #GNUmakefile
 	-rm rootca-index.txt
 	touch rootca-index.txt
 	mkdir -p rootca-certs
@@ -41,7 +41,7 @@ rootca.crt: rootca.key rootca.cnf GNUmakefile
 	openssl ca -config rootca.cnf -gencrl -out rootca.crl.pem
 	openssl crl -in rootca.crl.pem -out rootca.crl -outform DER
 
-signca.crt: signca.key signca.cnf GNUmakefile
+signca.crt: signca.key signca.cnf rootca.crt #GNUmakefile
 	-rm signca-index.txt
 	touch signca-index.txt
 	mkdir -p signca-certs
@@ -51,7 +51,7 @@ signca.crt: signca.key signca.cnf GNUmakefile
 	openssl ca -config signca.cnf -gencrl -out signca.crl.pem
 	openssl crl -in signca.crl.pem -out signca.crl -outform DER
 
-mycert.crt: mycert.key mycert.cnf GNUmakefile
+mycert.crt: mycert.key mycert.cnf signca.crt #GNUmakefile
 	-rm mycert-index.txt
 	touch mycert-index.txt
 	mkdir -p mycert-certs
