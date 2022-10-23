@@ -14,17 +14,17 @@ authorityKeyIdentifier=keyid:always
 subjectKeyIdentifier=hash
 keyUsage = critical, digitalSignature
 extendedKeyUsage = codeSigning
-crlDistributionPoints=crldp1_section,crldp2_section
-certificatePolicies=@polsect1, @polsect2
+crlDistributionPoints=crldp1_section #,crldp2_section
+#certificatePolicies=@polsect1, @polsect2
 authorityInfoAccess = @aia_sect
 basicConstraints = critical,CA:false
 
 [aia_sect]
-OCSP;URI = http://ocsp.digicert.com
-caIssuers;URI = http://cacerts.digicert.com/DigiCertSHA2AssuredIDCodeSigningCA.crt
+#OCSP;URI = http://ocsp.digicert.com
+caIssuers;URI = https://github.com/mmcx/ucsca/raw/master/CompanyUCSCodeSigningCA.crt
 
 [crldp1_section]
-fullname=URI:http://crl3.digicert.com/sha2-assured-cs-g1.crl
+fullname=URI:https://github.com/mmcx/ucsca/raw/master/CompanyUCSCodeSigningCA.crl
 
 [crldp2_section]
 fullname = URI:http://crl4.digicert.com/sha2-assured-cs-g1.crl
@@ -56,11 +56,11 @@ x509_extensions = ca_extensions
 base_dir      = .
 certificate   = $base_dir/signca.crt           # The CA certifcate
 private_key   = $base_dir/signca.key           # The CA private key
-new_certs_dir = $base_dir/mycert-certs         # Location for new certs after signing
-database      = $base_dir/mycert-index.txt     # Database index file
-#serial        = $base_dir/mycert-serial.txt   # The current serial number
+new_certs_dir = $base_dir/temp/                # Location for new certs after signing
+database      = $base_dir/temp/mycert-index.txt     # Database index file
+serial        = $base_dir/temp/mycert-serial.txt   # The current serial number
 
-rand_serial = yes
+rand_serial = no
 
 unique_subject = no  # Set to 'no' to allow creation of
                      # several certificates with same subject.
