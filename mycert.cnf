@@ -1,0 +1,78 @@
+[ req ]
+prompt                 = no
+distinguished_name     = req_distinguished_name
+x509_extensions        = ca_extensions
+
+[ req_distinguished_name ]
+C  = RU
+L  = Moscow
+O  = Company UCS LLC
+CN = Company UCS LLC
+
+[ca_extensions]
+authorityKeyIdentifier=keyid:always
+subjectKeyIdentifier=hash
+keyUsage = critical, digitalSignature
+extendedKeyUsage = codeSigning
+crlDistributionPoints=crldp1_section,crldp2_section
+certificatePolicies=@polsect1, @polsect2
+authorityInfoAccess = @aia_sect
+basicConstraints = critical,CA:false
+
+[aia_sect]
+OCSP;URI = http://ocsp.digicert.com
+caIssuers;URI = http://cacerts.digicert.com/DigiCertSHA2AssuredIDCodeSigningCA.crt
+
+[crldp1_section]
+fullname=URI:http://crl3.digicert.com/sha2-assured-cs-g1.crl
+
+[crldp2_section]
+fullname = URI:http://crl4.digicert.com/sha2-assured-cs-g1.crl
+
+[polsect1]
+policyIdentifier = 2.16.840.1.114412.3.1
+CPS = https://www.digicert.com/CPS
+
+[polsect2]
+policyIdentifier = 2.23.140.1.4.1
+
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+default_days     = 365          # How long to certify for
+default_crl_days = 30           # How long before next CRL
+default_md       = sha256       # Use public key default MD
+preserve         = no           # Keep passed DN ordering
+
+x509_extensions = ca_extensions # The extensions to add to the cert
+
+email_in_dn     = no            # Don't concat the email in the DN
+#copy_extensions = copy          # Required to copy SANs from CSR to cert
+
+policy=signing_policy
+x509_extensions = ca_extensions
+
+base_dir      = .
+certificate   = $base_dir/signca.crt           # The CA certifcate
+private_key   = $base_dir/signca.key           # The CA private key
+new_certs_dir = $base_dir/mycert-certs         # Location for new certs after signing
+database      = $base_dir/mycert-index.txt     # Database index file
+#serial        = $base_dir/mycert-serial.txt   # The current serial number
+
+rand_serial = yes
+
+unique_subject = no  # Set to 'no' to allow creation of
+                     # several certificates with same subject.
+
+default_startdate = 20221022000000Z
+default_enddate   = 20251022000000Z
+
+[ signing_policy ]
+countryName            = optional
+stateOrProvinceName    = optional
+localityName           = optional
+organizationName       = optional
+organizationalUnitName = optional
+commonName             = supplied
+emailAddress           = optional
